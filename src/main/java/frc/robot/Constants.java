@@ -26,11 +26,11 @@ public final class Constants {
     // in kg
     public static final double kRobotMOI = 2;
     // in kg
-    public static final double kRobotMass = 26;
+    public static final double kRobotMass = 69.8532;
     // Meters
-    public static final double kDistanceBetweenWheels = 0.5;
+    public static final double kDistanceBetweenWheels = 0.762;
     public static final int kMotorsPerSide = 2;
-    public static final double kGearRatio = 10.71;
+    public static final double kGearRatio = 9.47;
     public static final double kSimDelta = 0.02;
 
     public static final class OI {
