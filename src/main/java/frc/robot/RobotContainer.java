@@ -8,8 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -23,23 +26,38 @@ public class RobotContainer {
   private final Joystick m_joystick1 = new Joystick(Constants.OI.kJoystick1Port);
   private final Joystick m_joystick2 = new Joystick(Constants.OI.kJoystick2Port);
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  private final Command tankDriveCommand = new RunCommand(
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+
+  private final Button m_buttonIntake = new JoystickButton(m_joystick1, Constants.OI.kIntakeButton);
+  private final Button m_buttonOuttake = new JoystickButton(m_joystick1, Constants.OI.kOutTakeButton);
+
+  private final Command m_tankDriveCommand = new RunCommand(
       () -> m_drivetrainSubsystem.tankDrive(m_joystick1.getY(), m_joystick2.getY()), m_drivetrainSubsystem);
+  private final Command m_intakeCommand = new RunCommand(
+    () -> m_intakeSubsystem.Intake(1), m_intakeSubsystem);
+  private final Command m_outtakeCommand = new RunCommand(
+      () -> m_intakeSubsystem.Outtake(1), m_intakeSubsystem);
+  private final Command m_defaultIntakeCommand = new RunCommand(
+    () -> m_intakeSubsystem.Reset(),  
+  m_intakeSubsystem);
+
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureButtonBindings();
 
-    m_drivetrainSubsystem.setDefaultCommand(tankDriveCommand);
+    m_drivetrainSubsystem.setDefaultCommand(m_tankDriveCommand);
+    m_intakeSubsystem.setDefaultCommand(m_defaultIntakeCommand);
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Button configuration
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    m_buttonIntake.whileHeld(m_intakeCommand);
+    m_buttonOuttake.whileHeld(m_outtakeCommand);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

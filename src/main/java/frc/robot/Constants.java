@@ -33,8 +33,13 @@ public final class Constants {
     public static final double kGearRatio = 9.47;
     public static final double kSimDelta = 0.02;
 
+    public static final int kIntakeMotorPort = 5;
+
     public static final class OI {
         public static final int kJoystick1Port = 0;
         public static final int kJoystick2Port = 1;
+
+        public static final int kIntakeButton = 2;
+        public static final int kOutTakeButton = 3;
     }
 }

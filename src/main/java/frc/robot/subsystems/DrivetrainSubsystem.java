@@ -72,7 +72,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         SmartDashboard.putData("Field", m_field);
 
         // Some sim values might need to be changed too
-        m_rightFront.setSensorPhase(true);
+        m_rightFront.setSensorPhase(false);
         m_leftFront.setSensorPhase(true);
 
         m_differentialDrive.setRightSideInverted(true);
