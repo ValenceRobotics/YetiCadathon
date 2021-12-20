@@ -32,9 +32,9 @@ public class RobotContainer {
   private final Command m_tankDriveCommand = new RunCommand(
       () -> m_drivetrainSubsystem.tankDrive(m_joystick1.getY(), m_joystick2.getY()), m_drivetrainSubsystem);
   private final Command m_intakeCommand = new RunCommand(
-    () -> m_intakeSubsystem.Intake(1), m_intakeSubsystem);
+    () -> m_intakeSubsystem.Intake(Constants.kIntakeMotorSpeed), m_intakeSubsystem);
   private final Command m_outtakeCommand = new RunCommand(
-      () -> m_intakeSubsystem.Outtake(1), m_intakeSubsystem);
+      () -> m_intakeSubsystem.Outtake(Constants.kIntakeMotorSpeed), m_intakeSubsystem);
   private final Command m_defaultIntakeCommand = new RunCommand(
     () -> m_intakeSubsystem.Reset(),  
   m_intakeSubsystem);
