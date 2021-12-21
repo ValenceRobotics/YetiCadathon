@@ -5,7 +5,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
@@ -54,6 +56,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_differentialDrive.feed();
     }
 
+    public void tankDriveVolts(double left, double right) {
+        // TODO: Might need to be inverted or something
+        m_leftFront.setVoltage(left);
+        m_rightFront.setVoltage(right);
+        m_differentialDrive.feed();
+    }
+
     @Override
     public void periodic() {
         m_odometry.update(m_gyro.getRotation2d(),
@@ -65,5 +74,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     private double motorUnitsToMeters(double sensorValue) {
         return (((double) sensorValue / Constants.kEncoderTicksPerRev) / Constants.kSensorGearRatio) * (2 * Math.PI * Units.inchesToMeters(Constants.kWheelRadius));
+    }
+
+    public Pose2d getOdometry() {
+        return m_odometry.getPoseMeters();
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(motorUnitsToMeters(m_leftFront.getSelectedSensorPosition()), motorUnitsToMeters(m_rightFront.getSelectedSensorPosition()));
+    }
+
+    public void resetOdometry(Pose2d pose) {
+        // TODO: Figure out how to reset encoders
+        m_odometry.resetPosition(pose, m_gyro.getRotation2d());
     }
 }
