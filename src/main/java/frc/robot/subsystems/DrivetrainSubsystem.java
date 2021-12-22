@@ -16,14 +16,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    private final WPI_TalonFX m_leftFront = new WPI_TalonFX(Constants.kMotor1Port);
-    private final WPI_TalonFX m_rightFront = new WPI_TalonFX(Constants.kMotor2Port);
-    private final WPI_TalonFX m_leftFollow = new WPI_TalonFX(Constants.kMotor3Port);
-    private final WPI_TalonFX m_rightFollow = new WPI_TalonFX(Constants.kMotor4Port);
+    private final WPI_TalonFX m_leftFront = new WPI_TalonFX(Constants.Drivetrain.kMotor1Port);
+    private final WPI_TalonFX m_rightFront = new WPI_TalonFX(Constants.Drivetrain.kMotor2Port);
+    private final WPI_TalonFX m_leftFollow = new WPI_TalonFX(Constants.Drivetrain.kMotor3Port);
+    private final WPI_TalonFX m_rightFollow = new WPI_TalonFX(Constants.Drivetrain.kMotor4Port);
 
     private final DifferentialDrive m_differentialDrive = new DifferentialDrive(m_leftFront, m_rightFront);
 
-    AnalogGyro m_gyro = new AnalogGyro(Constants.kGyroPort);
+    AnalogGyro m_gyro = new AnalogGyro(Constants.Drivetrain.kGyroPort);
 
     Field2d m_field = new Field2d();
     DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
@@ -60,7 +60,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void tankDriveVolts(double left, double right) {
-        // TODO: Might need to be inverted or something
         m_leftFront.setVoltage(left);
         m_rightFront.setVoltage(-right);
         m_differentialDrive.feed();
@@ -76,7 +75,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     private double motorUnitsToMeters(double sensorValue) {
-        return (((double) sensorValue / Constants.kEncoderTicksPerRev) / Constants.kSensorGearRatio) * (2 * Math.PI * Units.inchesToMeters(Constants.kWheelRadius));
+        return (((double) sensorValue / Constants.Drivetrain.kEncoderTicksPerRev) / Constants.Drivetrain.kSensorGearRatio) * (2 * Math.PI * Units.inchesToMeters(Constants.Drivetrain.kWheelRadius));
     }
 
     public Pose2d getOdometry() {
@@ -88,7 +87,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void resetOdometry(Pose2d pose) {
-        // TODO: Figure out how to reset encoders
         m_odometry.resetPosition(pose, m_gyro.getRotation2d());
     }
 }

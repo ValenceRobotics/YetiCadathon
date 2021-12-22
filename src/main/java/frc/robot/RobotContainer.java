@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import frc.robot.commands.HingeCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.HingeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -42,11 +42,11 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
   // Subsystems
-  private final IntakeSubsystem m_intakeSubsystemFront = new IntakeSubsystem(Constants.kIntakeMotorPortFront);
-  private final IntakeSubsystem m_intakeSubsystemBack = new IntakeSubsystem(Constants.kIntakeMotorPortBack);
+  private final IntakeSubsystem m_intakeSubsystemFront = new IntakeSubsystem(Constants.Intake.kIntakeMotorPortFront);
+  private final IntakeSubsystem m_intakeSubsystemBack = new IntakeSubsystem(Constants.Intake.kIntakeMotorPortBack);
 
-  private final HingeSubsystem m_hingeSubsystemFront = new HingeSubsystem(Constants.kHingeMotorPortFront);
-  private final HingeSubsystem m_hingeSubsystemBack = new HingeSubsystem(Constants.kHingeMotorPortBack);
+  private final HingeSubsystem m_hingeSubsystemFront = new HingeSubsystem(Constants.Hinge.kHingeMotorPortFront, Constants.Hinge.kHingeEncoderPortFront);
+  private final HingeSubsystem m_hingeSubsystemBack = new HingeSubsystem(Constants.Hinge.kHingeMotorPortBack, Constants.Hinge.kHingeEncoderPortFront);
 
   // Buttons
   private final Button m_buttonIntakeFront = new JoystickButton(m_joystick1, Constants.OI.kIntakeButtonFront);
@@ -61,38 +61,38 @@ public class RobotContainer {
   private final Button m_buttonHingeDownBack = new JoystickButton(m_joystick1, Constants.OI.kHingeDownButtonBack);
   private final Button m_buttonHingeUpBack = new JoystickButton(m_joystick1, Constants.OI.kHingeUpButtonBack);
 
-  // TODO: Move these into a commands file
+  // Commands
   private final Command m_tankDriveCommand = new RunCommand(
       () -> m_drivetrainSubsystem.tankDrive(m_joystick1.getY(), m_joystick2.getY()), m_drivetrainSubsystem);
 
   private final Command m_intakeCommandFront = new RunCommand(
-    () -> m_intakeSubsystemFront.Intake(Constants.kIntakeMotorSpeed), m_intakeSubsystemFront);
+    () -> m_intakeSubsystemFront.Intake(Constants.Intake.kIntakeMotorSpeed), m_intakeSubsystemFront);
   private final Command m_outtakeCommandFront = new RunCommand(
-      () -> m_intakeSubsystemFront.Outtake(Constants.kIntakeMotorSpeed), m_intakeSubsystemFront);
+      () -> m_intakeSubsystemFront.Outtake(Constants.Intake.kIntakeMotorSpeed), m_intakeSubsystemFront);
   private final Command m_defaultIntakeCommandFront = new RunCommand(
     () -> m_intakeSubsystemFront.Reset(),  
     m_intakeSubsystemFront);
 
   private final Command m_intakeCommandBack = new RunCommand(
-    () -> m_intakeSubsystemBack.Intake(Constants.kIntakeMotorSpeed), m_intakeSubsystemBack);
+    () -> m_intakeSubsystemBack.Intake(Constants.Intake.kIntakeMotorSpeed), m_intakeSubsystemBack);
   private final Command m_outtakeCommandBack = new RunCommand(
-      () -> m_intakeSubsystemBack.Outtake(Constants.kIntakeMotorSpeed), m_intakeSubsystemBack);
+      () -> m_intakeSubsystemBack.Outtake(Constants.Intake.kIntakeMotorSpeed), m_intakeSubsystemBack);
   private final Command m_defaultIntakeCommandBack = new RunCommand(
     () -> m_intakeSubsystemBack.Reset(),  
     m_intakeSubsystemBack);
 
     private final Command m_hingeDownCommandFront = new RunCommand(
-      () -> m_hingeSubsystemFront.Down(Constants.kHingeMotorSpeed), m_hingeSubsystemFront);
+      () -> m_hingeSubsystemFront.Down(Constants.Hinge.kHingeMotorSpeed), m_hingeSubsystemFront);
     private final Command m_hingeUpCommandFront = new RunCommand(
-        () -> m_hingeSubsystemFront.Up(Constants.kHingeMotorSpeed), m_hingeSubsystemFront);
+        () -> m_hingeSubsystemFront.Up(Constants.Hinge.kHingeMotorSpeed), m_hingeSubsystemFront);
     private final Command m_defaultHingeCommandFront = new RunCommand(
       () -> m_hingeSubsystemFront.Reset(),  
       m_hingeSubsystemFront);
 
     private final Command m_hingeDownCommandBack = new RunCommand(
-      () -> m_hingeSubsystemBack.Down(Constants.kHingeMotorSpeed), m_hingeSubsystemBack);
+      () -> m_hingeSubsystemBack.Down(Constants.Hinge.kHingeMotorSpeed), m_hingeSubsystemBack);
     private final Command m_hingeUpCommandBack = new RunCommand(
-        () -> m_hingeSubsystemBack.Up(Constants.kHingeMotorSpeed), m_hingeSubsystemBack);
+        () -> m_hingeSubsystemBack.Up(Constants.Hinge.kHingeMotorSpeed), m_hingeSubsystemBack);
     private final Command m_defaultHingeCommandBack = new RunCommand(
       () -> m_hingeSubsystemBack.Reset(),  
       m_hingeSubsystemBack);
@@ -135,14 +135,14 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     DifferentialDriveVoltageConstraint voltageConstraint = new DifferentialDriveVoltageConstraint(
-      new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltsSecondsSquaredPerMeter),
-      Constants.kDriveKinematics,
+      new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.kvVoltSecondsPerMeter, Constants.Drivetrain.kaVoltsSecondsSquaredPerMeter),
+      Constants.Drivetrain.kDriveKinematics,
       10);
     
       TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-        Constants.kMaxSpeedMetersPerSecond, 
-        Constants.kMaxAccelerationMetersPerSecondSquared)
-        .setKinematics(Constants.kDriveKinematics)
+        Constants.Drivetrain.kMaxSpeedMetersPerSecond, 
+        Constants.Drivetrain.kMaxAccelerationMetersPerSecondSquared)
+        .setKinematics(Constants.Drivetrain.kDriveKinematics)
         .addConstraint(voltageConstraint);
       
       Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -157,12 +157,12 @@ public class RobotContainer {
       RamseteCommand ramseteCommand = new RamseteCommand(
         trajectory,
         m_drivetrainSubsystem::getOdometry, 
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
-        new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltsSecondsSquaredPerMeter),
-        Constants.kDriveKinematics, 
+        new RamseteController(Constants.Drivetrain.kRamseteB, Constants.Drivetrain.kRamseteZeta), 
+        new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.kvVoltSecondsPerMeter, Constants.Drivetrain.kaVoltsSecondsSquaredPerMeter),
+        Constants.Drivetrain.kDriveKinematics, 
         m_drivetrainSubsystem::getWheelSpeeds, 
-        new PIDController(Constants.kPDriveVel, 0.0 , 0.0), 
-        new PIDController(Constants.kPDriveVel, 0.0 , 0.0), 
+        new PIDController(Constants.Drivetrain.kPDriveVel, 0.0 , 0.0), 
+        new PIDController(Constants.Drivetrain.kPDriveVel, 0.0 , 0.0), 
         m_drivetrainSubsystem::tankDriveVolts, 
         m_drivetrainSubsystem);
 
@@ -170,30 +170,33 @@ public class RobotContainer {
 
       return new 
         // Intake front ball
-        InstantCommand(() -> m_hingeSubsystemFront.Down(Constants.kHingeMotorSpeed))
-        .andThen(new WaitCommand(Constants.kAutoHingeTime))
+        HingeCommand(60, m_hingeSubsystemFront)
         .andThen(() -> m_hingeSubsystemFront.Reset())
-        .andThen(() -> m_intakeSubsystemFront.Intake(Constants.kIntakeMotorSpeed))
-        .andThen(new WaitCommand(Constants.kAutoIntakeTime))
+        .andThen(() -> m_intakeSubsystemFront.Intake(Constants.Intake.kIntakeMotorSpeed))
+        .andThen(new WaitCommand(Constants.Intake.kAutoIntakeTime))
         .andThen(() -> m_intakeSubsystemFront.Reset())
+        .andThen(new HingeCommand(0, m_hingeSubsystemFront))
+        .andThen(() -> m_hingeSubsystemFront.Reset())
         // Intake back ball
-        .andThen(() -> m_hingeSubsystemBack.Down(Constants.kHingeMotorSpeed))
-        .andThen(new WaitCommand(Constants.kAutoHingeTime))
+        .andThen(new HingeCommand(60, m_hingeSubsystemBack))
         .andThen(() -> m_hingeSubsystemBack.Reset())
-        .andThen(() -> m_intakeSubsystemBack.Intake(Constants.kIntakeMotorSpeed))
-        .andThen(new WaitCommand(Constants.kAutoIntakeTime))
+        .andThen(() -> m_intakeSubsystemBack.Intake(Constants.Intake.kIntakeMotorSpeed))
+        .andThen(new WaitCommand(Constants.Intake.kAutoIntakeTime))
         .andThen(() -> m_intakeSubsystemBack.Reset())
+        .andThen(new HingeCommand(0, m_hingeSubsystemBack))
+        .andThen(() -> m_hingeSubsystemBack.Reset())
         // Follow trajectory
         .andThen(ramseteCommand)
         .andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0))
         // OutTake all balls into low goal
-        .andThen(() -> m_hingeSubsystemFront.Down(Constants.kAutoHingeTime))
-        .andThen(new WaitCommand(Constants.kAutoHingeTime))
+        .andThen(new HingeCommand(60, m_hingeSubsystemFront))
         .andThen(() -> m_hingeSubsystemFront.Reset())
-        .andThen(() -> m_intakeSubsystemFront.Outtake(Constants.kIntakeMotorSpeed))
-        .andThen(() -> m_intakeSubsystemBack.Intake(Constants.kIntakeMotorSpeed))
-        .andThen(new WaitCommand(Constants.kAutoIntakeTime * 2))
+        .andThen(() -> m_intakeSubsystemFront.Outtake(Constants.Intake.kIntakeMotorSpeed))
+        .andThen(() -> m_intakeSubsystemBack.Intake(Constants.Intake.kIntakeMotorSpeed))
+        .andThen(new WaitCommand(Constants.Intake.kAutoIntakeTime * 2))
         .andThen(() -> m_intakeSubsystemFront.Reset())
-        .andThen(() -> m_intakeSubsystemBack.Reset());
+        .andThen(() -> m_intakeSubsystemBack.Reset())
+        .andThen(new HingeCommand(0, m_hingeSubsystemFront))
+        .andThen(() -> m_hingeSubsystemFront.Reset());
   }
 }
