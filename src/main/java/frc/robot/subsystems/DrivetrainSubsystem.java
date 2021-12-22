@@ -21,8 +21,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final WPI_TalonFX m_leftFollow = new WPI_TalonFX(Constants.Drivetrain.kMotor3Port);
     private final WPI_TalonFX m_rightFollow = new WPI_TalonFX(Constants.Drivetrain.kMotor4Port);
 
-    private final DifferentialDrive m_differentialDrive = new DifferentialDrive(m_leftFront, m_rightFront);
-
     AnalogGyro m_gyro = new AnalogGyro(Constants.Drivetrain.kGyroPort);
 
     Field2d m_field = new Field2d();
@@ -48,21 +46,24 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_rightFollow.setInverted(TalonFXInvertType.FollowMaster);
         m_leftFollow.setInverted(TalonFXInvertType.FollowMaster);
 
-        m_differentialDrive.setRightSideInverted(false);
-
 
         SmartDashboard.putData("Field", m_field);
     }
 
     public void tankDrive(double left, double right) {
-        m_differentialDrive.tankDrive(left, right);
-        m_differentialDrive.feed();
+        m_leftFront.set(left);
+        m_rightFront.set(right);
+
+        m_leftFront.feed();
+        m_rightFront.feed();
     }
 
     public void tankDriveVolts(double left, double right) {
         m_leftFront.setVoltage(left);
         m_rightFront.setVoltage(-right);
-        m_differentialDrive.feed();
+        
+        m_leftFront.feed();
+        m_rightFront.feed();
     }
 
     @Override

@@ -21,7 +21,7 @@ public final class Constants {
         public static final int kMotor3Port = 2;
         public static final int kMotor4Port = 3;
         public static final int kGyroPort = 1;
-        public static final int kEncoderTicksPerRev = 4096;
+        public static final int kEncoderTicksPerRev = 2048;
         public static final double kSensorGearRatio = 1;
         // Inches
         public static final double kWheelRadius = 3;
