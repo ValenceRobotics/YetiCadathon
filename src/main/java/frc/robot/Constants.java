@@ -49,17 +49,38 @@ public final class Constants {
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
 
-    // Intake
-    public static final int kIntakeMotorPort = 5;
+    // Intakes
+    public static final int kIntakeMotorPortFront = 5;
+    public static final int kIntakeMotorPortBack = 6;
+
     public static final double kIntakeMotorSpeed = 1;
 
-    public static final double kAutoOuttakeTime = 1.5;
+    public static final double kAutoIntakeTime = 0.6;
+
+    // Hinges
+    public static final int kHingeMotorPortFront = 7;
+    public static final int kHingeMotorPortBack = 8;
+
+    public static final double kHingeMotorSpeed = 1;
+
+    public static final double kAutoHingeTime = 0.6;
 
     public static final class OI {
         public static final int kJoystick1Port = 0;
         public static final int kJoystick2Port = 1;
 
-        public static final int kIntakeButton = 2;
-        public static final int kOutTakeButton = 3;
+        // Intakes
+        public static final int kIntakeButtonFront = 2;
+        public static final int kOutTakeButtonFront = 3;
+
+        public static final int kIntakeButtonBack = 4;
+        public static final int kOutTakeButtonBack = 5;
+
+        // Hinges
+        public static final int kHingeDownButtonFront = 6;
+        public static final int kHingeUpButtonFront = 7;
+
+        public static final int kHingeDownButtonBack = 8;
+        public static final int kHingeUpButtonBack = 9;
     }
 }

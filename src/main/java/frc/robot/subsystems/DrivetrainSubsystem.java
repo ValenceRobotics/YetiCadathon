@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -33,22 +34,24 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_leftFollow.configFactoryDefault();
         m_rightFollow.configFactoryDefault();
 
+        m_leftFront.setNeutralMode(NeutralMode.Brake);
+        m_rightFront.setNeutralMode(NeutralMode.Brake);
+        m_leftFollow.setNeutralMode(NeutralMode.Brake);
+        m_rightFollow.setNeutralMode(NeutralMode.Brake);
+
         m_leftFollow.follow(m_leftFront);
         m_rightFollow.follow(m_rightFront);
 
-        // Might need to be changed
-        m_rightFront.setInverted(TalonFXInvertType.Clockwise);
-        m_leftFront.setInverted(TalonFXInvertType.CounterClockwise);
+        m_rightFront.setInverted(TalonFXInvertType.CounterClockwise);
+        m_leftFront.setInverted(TalonFXInvertType.Clockwise);
+
         m_rightFollow.setInverted(TalonFXInvertType.FollowMaster);
         m_leftFollow.setInverted(TalonFXInvertType.FollowMaster);
 
+        m_differentialDrive.setRightSideInverted(false);
+
+
         SmartDashboard.putData("Field", m_field);
-
-        // Some values of this might need to be changed too
-        m_rightFront.setSensorPhase(true);
-        m_leftFront.setSensorPhase(true);
-
-        m_differentialDrive.setRightSideInverted(true);
     }
 
     public void tankDrive(double left, double right) {
@@ -59,7 +62,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public void tankDriveVolts(double left, double right) {
         // TODO: Might need to be inverted or something
         m_leftFront.setVoltage(left);
-        m_rightFront.setVoltage(right);
+        m_rightFront.setVoltage(-right);
         m_differentialDrive.feed();
     }
 
